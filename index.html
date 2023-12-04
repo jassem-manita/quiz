@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dare Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #3498db;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        .page-container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            text-align: left;
+            font-size: 0.8em;
+        }
+
+        input, select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 0 0 15px;
+            box-sizing: border-box;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #2c3e50;
+        }
+
+        button {
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .restart-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .restart-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div id="page1" class="page-container active">
+    <h1>Welcome to the Dare Game! 😊</h1>
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" placeholder="Enter your name">
+
+    <label for="age">Your Age:</label>
+    <input type="number" id="age" placeholder="Enter your age">
+
+    <label for="loveInterestQuestion">Do you have a Love Interest? (yes/no):</label>
+    <input type="text" id="loveInterestQuestion" placeholder="Enter your answer">
+
+    <button onclick="processFirstPage()">Next</button>
+</div>
+
+<div id="page2" class="page-container">
+    <h1>Love Interest Questions ❤️</h1>
+    <label for="loveInterestQualities">Describe your Love Interest in a few words:</label>
+    <input type="text" id="loveInterestQualities" placeholder="Enter your answer">
+
+    <label for="loveInterestFuture">What do you hope for in the future with your Love Interest? 🌈</label>
+    <input type="text" id="loveInterestFuture" placeholder="Enter your answer">
+
+    <button onclick="processLoveInterestPage()">Next</button>
+</div>
+
+<div id="page3" class="page-container">
+    <h1>Love Interest Details 🌟</h1>
+    <label for="loveInterestName">Love Interest's Name:</label>
+    <input type="text" id="loveInterestName" placeholder="Enter your Love Interest's name">
+
+    <label for="loveInterestGender">Select your Love Interest's gender:</label>
+    <select id="loveInterestGender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="futurePlans">What are your plans for the future with your Love Interest? 🗓️</label>
+    <input type="text" id="futurePlans" placeholder="Enter your answer">
+
+    <button onclick="processFuturePage()">Next</button>
+</div>
+
+<div id="finalPage" class="page-container">
+    <h1>Final Dare 🎉</h1>
+    <p id="dareResult"></p>
+    <button class="restart-button" onclick="restartQuiz()">Take Quiz Again</button>
+</div>
+
+<script>
+    function processFirstPage() {
+        var name = document.getElementById('name').value;
+        var age = document.getElementById('age').value;
+        var loveInterestQuestion = document.getElementById('loveInterestQuestion').value.toLowerCase();
+
+        if (name.trim() === '' || age.trim() === '' || loveInterestQuestion.trim() === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        document.getElementById('page1').classList.remove('active');
+        document.getElementById('page2').classList.add('active');
+    }
+
+    function processLoveInterestPage() {
+        var loveInterestQualities = document.getElementById('loveInterestQualities').value;
+        var loveInterestFuture = document.getElementById('loveInterestFuture').value;
+
+        if (loveInterestQualities.trim() === '' || loveInterestFuture.trim() === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        localStorage.setItem('loveInterestQualities', loveInterestQualities);
+        localStorage.setItem('loveInterestFuture', loveInterestFuture);
+
+        document.getElementById('page2').classList.remove('active');
+        document.getElementById('page3').classList.add('active');
+    }
+
+    function processFuturePage() {
+        var loveInterestName = document.getElementById('loveInterestName').value;
+        var loveInterestGender = document.getElementById('loveInterestGender').value;
+        var futurePlans = document.getElementById('futurePlans').value;
+
+        if (loveInterestGender === '' || futurePlans.trim() === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        localStorage.setItem('loveInterestName', loveInterestName);
+        localStorage.setItem('loveInterestGender', loveInterestGender);
+        localStorage.setItem('futurePlans', futurePlans);
+
+        // Generate the dare result based on the entered data
+        generateDare();
+
+        document.getElementById('page3').classList.remove('active');
+        document.getElementById('finalPage').classList.add('active');
+    }
+
+    function generateDare() {
+        var name = document.getElementById('name').value;
+        var loveInterestQualities = localStorage.getItem('loveInterestQualities');
+        var loveInterestFuture = localStorage.getItem('loveInterestFuture');
+        var futurePlans = localStorage.getItem('futurePlans');
+        var loveInterestName = localStorage.getItem('loveInterestName');
+        var loveInterestGender = localStorage.getItem('loveInterestGender');
+
+        var dareList = [];
+
+        // Check if the Love Interest name is "jassem" or "jasem"
+        if (loveInterestName && (loveInterestName.toLowerCase() === 'jassem' || loveInterestName.toLowerCase() === 'jasem')) {
+            dareList.push(`Send ${loveInterestName} teddies because he deserves them! 🧸`);
+        } else {
+            // Dares based on Love Interest's gender
+            if (loveInterestGender === 'male') {
+                dareList.push(`Tell your Love Interest what you admire most about him and why. 🌟`);
+                dareList.push(`Send your Love Interest a funny meme to make him laugh! 😄`);
+            } else if (loveInterestGender === 'female') {
+                dareList.push(`Compliment your Love Interest and let her know she's incredible! 💖`);
+                dareList.push(`Plan a cute surprise for your Love Interest and make her day! 🎁`);
+            } else {
+                dareList.push(`Share a fun fact about yourself with your Love Interest and ask for one in return! 🤔`);
+                dareList.push(`Send a thoughtful message to your Love Interest expressing your genuine feelings. ❤️`);
+            }
+
+            // Dares based on previous answers
+            dareList.push(`Write a sweet note to your Love Interest describing their qualities: ${loveInterestQualities} 💌`);
+            dareList.push(`Plan a surprise date with your Love Interest, incorporating your future hopes: ${loveInterestFuture} 🌟`);
+            dareList.push(`Share your future plans with your Love Interest: ${futurePlans} 🗨️`);
+        }
+
+        // Shuffle the dare list to ensure randomness
+        dareList = shuffleArray(dareList);
+
+        var resultMessage = `Hmmm ${name}, your final dare is: ${dareList[0]} 🎁`;
+
+        document.getElementById('dareResult').innerText = resultMessage;
+    }
+
+    // Function to shuffle an array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function restartQuiz() {
+        // Reset stored data
+        localStorage.removeItem('loveInterestQualities');
+        localStorage.removeItem('loveInterestFuture');
+        localStorage.removeItem('futurePlans');
+        localStorage.removeItem('loveInterestName');
+        localStorage.removeItem('loveInterestGender');
+
+        // Reset input fields
+        document.getElementById('name').value = '';
+        document.getElementById('age').value = '';
+        document.getElementById('loveInterestQuestion').value = '';
+        document.getElementById('loveInterestQualities').value = '';
+        document.getElementById('loveInterestFuture').value = '';
+        document.getElementById('loveInterestName').value = '';
+        document.getElementById('futurePlans').value = '';
+
+        // Reset page visibility
+        document.getElementById('finalPage').classList.remove('active');
+        document.getElementById('page1').classList.add('active');
+    }
+</script>
+
+</body>
+</html>
